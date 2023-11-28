@@ -15,13 +15,30 @@
 			<input type="text" name="" id="" @input="setNickName" />
 		</div> -->
 		<div>
+			<h1>{{ setGetFullName }}</h1>
 			<h1>First Name : {{ firstName }}</h1>
 			<h1>Last Name : {{ lastName }}</h1>
 			<!-- <h2>NickName : {{ nickName }}</h2> -->
-			<h1>age : {{ age }}</h1>
+			<h1>Age : {{ age }}</h1>
+			<h1>Salary for month : {{ salary }}</h1>
+			<h1>Salary for year : {{ setGetIncome }}</h1>
+			<h1>
+				Position-Method :
+				{{ setGetDepartmentMethod() }}
+			</h1>
+			<h1>Position-Computed : {{ setGetDepartment }}</h1>
+
+			<button @click="addSalary(input)">UpSalary</button>
+
+			<!-- <h2>Method1 : {{ setGetRandomByMethod() }}</h2>
+			<h2>Method2 : {{ setGetRandomByMethod() }}</h2>
+			<hr />
+			<h2>Computed1 : {{ setGetRandomByComputed }}</h2>
+			<h2>Computed2 : {{ setGetRandomByComputed }}</h2> -->
 		</div>
+
 		<!-- {{ isVisible }} -->
-		<button @click="toggleVisible">
+		<button @click="setToggleVisible">
 			{{ isVisible === true ? "Visible" : "Show" }}
 		</button>
 		<article v-show="isVisible">
@@ -58,7 +75,6 @@
 
 <script>
 // import HelloWorldVue from "./components/HelloWorld.vue";
-
 export default {
 	data() {
 		return {
@@ -83,6 +99,7 @@ export default {
 				"Read Book",
 			],
 			isVisible: false,
+			salary: 30_000,
 		};
 	},
 	methods: {
@@ -99,14 +116,51 @@ export default {
 		// 	// console.log(e.target.value);
 		// 	this.nickName = e.target.value;
 		// },
+		// setGetFullName() {
+		// 	return `${this.firstName} ${this.lastName}`;
+		// },
 		submitForm(e) {
 			e.preventDefault();
 			// alert("Submit Form success");
 			// console.log(this.$refs.nickNameEl);
 			this.nickName = this.$refs.nickNameEl.value;
 		},
-		toggleVisible() {
+		setToggleVisible() {
 			this.isVisible = !this.isVisible;
+		},
+		setGetRandomByMethod() {
+			return Math.random() * 10;
+		},
+		addSalary(input) {
+			input = 5000;
+			return (this.salary += input);
+		},
+		setGetDepartmentMethod() {
+			return this.salary >= 35000 ? "Pro-Developer" : "Min-Developer";
+		},
+	},
+	computed: {
+		setGetFullName() {
+			return `${this.firstName} ${this.lastName}`;
+		},
+		setGetRandomByComputed() {
+			return Math.random();
+		},
+		setGetIncome() {
+			return this.salary * 12;
+		},
+		setGetDepartment() {
+			return this.salary >= 35000 ? "Pro-Developer" : "Min-Developer";
+		},
+	},
+	watch: {
+		salary(value) {
+			if (value > 50000) {
+				alert("เงินเดือนไม่ควรเกิน 50,000 บาท");
+				setTimeout(() => {
+					this.salary = 50000;
+				}, 2000);
+			}
 		},
 	},
 };
